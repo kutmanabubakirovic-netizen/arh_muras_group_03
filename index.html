@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     ARH_MURAS_GROUP — index.html (Главная страница)
+     
+     СТРУКТУРА:
+     ├── <head>     — мета, шрифты, style.css
+     ├── .site-header  — шапка с навигацией
+     ├── .hero         — главный экран
+     ├── .directions   — четыре направления студии
+     ├── .portfolio-preview — превью портфолио
+     ├── #services     — пакеты услуг
+     ├── #contact      — форма заявки и контакты
+     └── footer        — подвал
+     
+     ПОДКЛЮЧЁННЫЕ ФАЙЛЫ:
+     ├── style.css    — все стили
+     ├── config.js    — настройки Supabase и пароли
+     ├── script.js    — логика проектов и форм
+     └── animations.js— темная тема, reveal, burger
+     ============================================================ -->
+<html lang="ru" data-theme="light">
+<!-- data-theme: "light" или "dark" — переключается animations.js -->
+
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport: важно для мобильных — без этого масштаб будет неверным -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ARH_MURAS_GROUP | Архитектура · Геодезия · Дизайн · Ландшафт</title>
+  
+  <!-- SEO мета-описание -->
+  <meta name="description" content="Архитектурная студия в Бишкеке. Проектирование, геодезия, дизайн интерьера, ландшафт.">
+  
+  <!-- Open Graph — превью при отправке ссылки в мессенджерах -->
+  <meta property="og:title" content="ARH_MURAS_GROUP | Архитектурная студия">
+  <meta property="og:description" content="Полный цикл проектирования в Бишкеке">
+  <meta property="og:type" content="website">
+  
+  <!-- Основные стили сайта -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Google Fonts: Cormorant Garamond (заголовки) + Jost (текст) -->
+  <!-- Если шрифты загружаются медленно — можно убрать и использовать системные -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+</head>
+
+<body>
+
+  <!-- ПРОГРЕСС-БАР ПРОКРУТКИ (золотая линия вверху) -->
+  <!-- Ширина обновляется в animations.js при скролле -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ========================================================
+       ШАПКА САЙТА
+       position: sticky — прилипает к верху
+       ======================================================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+      <!-- ЛОГОТИП -->
+      <a href="index.html" class="logo">
+        <!-- SVG логотип: 4 квадрата + точка в центре -->
+        <svg class="logo-svg" width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="10" y="10" width="35" height="35" fill="none" stroke="currentColor" stroke-width="4"/>
+          <rect x="55" y="10" width="35" height="35" fill="none" stroke="currentColor" stroke-width="4"/>
+          <rect x="10" y="55" width="35" height="35" fill="none" stroke="currentColor" stroke-width="4"/>
+          <rect x="55" y="55" width="35" height="35" fill="none" stroke="currentColor" stroke-width="4"/>
+          <circle cx="50" cy="50" r="5" fill="currentColor"/>
+        </svg>
+        <span class="logo-text">ARH_MURAS_GROUP</span>
+      </a>
+
+      <!-- НАВИГАЦИЯ (скрыта на мобильных, открывается burger-ом) -->
+      <nav class="main-nav" id="mainNav" aria-label="Основная навигация">
+        <ul>
+          <li><a href="index.html" class="active">О СТУДИИ</a></li>
+          <li><a href="projects.html">ПОРТФОЛИО</a></li>
+           <li><a href="team.html">КОМАНДА</a></li> 
+          <li><a href="#services">УСЛУГИ</a></li>
+          <li><a href="#contact">КОНТАКТЫ</a></li>
+        </ul>
+      </nav>
+
+      <!-- ПРАВЫЙ БЛОК ШАПКИ -->
+      <div class="header-right">
+
+        <!-- Кнопка смены темы (◐ → light/dark) -->
+        <button class="theme-toggle" id="themeToggle" title="Тёмная тема" aria-label="Переключить тему">
+          <span class="theme-icon" aria-hidden="true">◐</span>
+        </button>
+
+        <!-- Кнопка "только для сотрудников" (видна когда не вошли) -->
+        <!-- onclick переназначается в script.js в зависимости от состояния -->
+        <button class="btn-staff-login" id="staffLoginBtn" onclick="loginPrompt()">
+          только для сотрудников ›
+        </button>
+
+        <!-- Кнопка burger (☰) — видна только на мобильных (display:none в CSS) -->
+        <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+  <!-- /ШАПКА -->
+
+  <!-- ========================================================
+       HERO — главный экран
+       Класс .reveal — элементы появляются при прокрутке
+       ======================================================== -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <!-- Левая колонка: текст -->
+      <div class="hero-left">
+        <div class="hero-label">ARH_MURAS_GROUP · Бишкек</div>
+        
+        <!-- Заголовок: 3 строки, em = курсив золотым цветом -->
+        <h1 class="reveal">
+          АРХИТЕКТУРА<br>
+          <em>В ГАРМОНИИ</em><br>
+          С ПРИРОДОЙ
+        </h1>
+        
+        <p class="hero-sub reveal">
+          Полный цикл проектирования — от концепции до авторского надзора.
+          Архитектура, геодезия, дизайн и ландшафт.
+        </p>
+        
+        <!-- CTA кнопки -->
+        <div class="hero-actions reveal">
+          <a href="#contact" class="btn-primary">НАЧАТЬ ПРОЕКТ →</a>
+          <a href="projects.html" class="btn-outline">ПОРТФОЛИО</a>
+        </div>
+      </div>
+
+      <!-- Правая колонка: фото + статистика (скрывается на мобильных) -->
+      <div class="hero-visual">
+        <div class="hero-img-wrap">
+          <!-- Замените URL на ваше фото -->
+          <img
+            src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80&w=900"
+            alt="Архитектура ARH_MURAS_GROUP"
+            loading="eager"
+          >
+          <!-- Подпись к фото -->
+          <div class="hero-img-tag">
+            <span>ПОСЛЕДНИЙ ПРОЕКТ</span>
+            <p>Жилой комплекс, Бишкек 2025</p>
+          </div>
+        </div>
+
+        <!-- Статистика: 3 блока -->
+        <div class="hero-stats-row">
+          <div class="hero-stat">
+            <!-- Числа и описания — меняйте здесь -->
+            <span class="hs-num">50+</span>
+            <span class="hs-txt">Проектов</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hs-num">12</span>
+            <span class="hs-txt">Лет опыта</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hs-num">4</span>
+            <span class="hs-txt">Направления</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- /HERO -->
+
+  <!-- ========================================================
+       ЧЕТЫРЕ НАПРАВЛЕНИЯ
+       Четыре карточки: Архитектура, Геодезия, Дизайн, Ландшафт
+       ======================================================== -->
+  <section class="directions-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="sub-label">НАША ЭКСПЕРТИЗА</span>
+        <h2>Четыре направления</h2>
+        <p>Полный спектр услуг под одной крышей</p>
+      </div>
+
+      <div class="directions-grid reveal">
+
+        <!-- КАРТОЧКА 01: АРХИТЕКТУРА -->
+        <!-- Чтобы добавить карточку — скопируйте этот блок -->
+        <div class="dir-card">
+          <span class="dir-num">01</span>
+          <span class="dir-icon" aria-hidden="true">🏗️</span>
+          <h3>Архитектура</h3>
+          <p>Полный цикл архитектурного проектирования — от идеи до реализации на объекте.</p>
+          <ul class="dir-list">
+            <li>Концептуальное проектирование</li>
+            <li>Рабочие чертежи и BIM</li>
+            <li>Авторский надзор</li>
+          </ul>
+        </div>
+
+        <!-- КАРТОЧКА 02: ГЕОДЕЗИЯ -->
+        <div class="dir-card">
+          <span class="dir-num">02</span>
+          <span class="dir-icon" aria-hidden="true">🗺️</span>
+          <h3>Геодезия</h3>
+          <p>Точные измерения и съёмки с применением современных технологий.</p>
+          <ul class="dir-list">
+            <li>Топографические съёмки</li>
+            <li>Лазерное сканирование</li>
+            <li>Аэрофотосъёмка дронами</li>
+          </ul>
+        </div>
+
+        <!-- КАРТОЧКА 03: ДИЗАЙН -->
+        <div class="dir-card">
+          <span class="dir-num">03</span>
+          <span class="dir-icon" aria-hidden="true">🎨</span>
+          <h3>Дизайн</h3>
+          <p>Интерьеры, которые отражают личность владельца и повышают качество жизни.</p>
+          <ul class="dir-list">
+            <li>Концепция и эскизы</li>
+            <li>Подбор материалов</li>
+            <li>Авторский надзор</li>
+          </ul>
+        </div>
+
+        <!-- КАРТОЧКА 04: ЛАНДШАФТ -->
+        <div class="dir-card">
+          <span class="dir-num">04</span>
+          <span class="dir-icon" aria-hidden="true">🌿</span>
+          <h3>Ландшафт</h3>
+          <p>Благоустройство территорий, гармонирующее с природой и архитектурой.</p>
+          <ul class="dir-list">
+            <li>Ландшафтное проектирование</li>
+            <li>Озеленение и благоустройство</li>
+            <li>Системы полива</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- /НАПРАВЛЕНИЯ -->
+
+  <!-- ========================================================
+       ПРЕВЬЮ ПОРТФОЛИО
+       Показывает 4 работы. Все ведут на projects.html
+       ======================================================== -->
+  <section class="portfolio-preview">
+    <div class="container">
+
+      <div class="portfolio-header reveal">
+        <div>
+          <span class="sub-label">ИЗБРАННЫЕ ПРОЕКТЫ</span>
+          <h2 style="margin-top:12px;">Наше портфолио</h2>
+        </div>
+        <div class="portfolio-header-right">
+          <a href="projects.html">Смотреть все проекты →</a>
+        </div>
+      </div>
+
+      <!-- СЕТКА ПРОЕКТОВ: 3 колонки, первый занимает 2 строки -->
+      <!-- Замените src и alt на ваши фото -->
+      <div class="portfolio-grid reveal">
+
+        <a href="projects.html" class="port-item">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=900" alt="Вилла Горизонт" loading="lazy">
+          <div class="port-overlay">
+            <div class="port-cat">Жилая архитектура</div>
+            <div class="port-title">Вилла «Горизонт»</div>
+          </div>
+        </a>
+
+        <a href="projects.html" class="port-item">
+          <img src="https://images.unsplash.com/photo-1497366012635-2b07e6a13f10?auto=format&fit=crop&q=80&w=600" alt="Бизнес-центр Модерн" loading="lazy">
+          <div class="port-overlay">
+            <div class="port-cat">Коммерческая</div>
+            <div class="port-title">Бизнес-центр «Модерн»</div>
+          </div>
+        </a>
+
+        <a href="projects.html" class="port-item">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&q=80&w=600" alt="Ресторан Nord" loading="lazy">
+          <div class="port-overlay">
+            <div class="port-cat">Дизайн интерьера</div>
+            <div class="port-title">Ресторан «Nord»</div>
+          </div>
+        </a>
+
+        <a href="projects.html" class="port-item">
+          <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&q=80&w=900" alt="Парк Зелёный берег" loading="lazy">
+          <div class="port-overlay">
+            <div class="port-cat">Ландшафт</div>
+            <div class="port-title">Парк «Зелёный берег»</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+  <!-- /ПОРТФОЛИО -->
+
+  <!-- ========================================================
+       ПАКЕТЫ УСЛУГ
+       id="services" — для якорной ссылки в навигации
+       ======================================================== -->
+  <section id="services" class="services-section">
+    <div class="container">
+
+      <div class="section-header reveal">
+        <span class="sub-label">ПАКЕТЫ УСЛУГ</span>
+        <h2>Комплексные решения</h2>
+        <p>Выберите подходящий пакет или соберите свой</p>
+      </div>
+
+      <div class="pricing-grid reveal">
+
+        <!-- ПАКЕТ 1: СТАРТОВЫЙ -->
+        <div class="pricing-card">
+          <div class="pkg-badge">СТАРТОВЫЙ</div>
+          <h3>Дом мечты</h3>
+          <!-- Цена: меняйте здесь -->
+          <div class="price">от $3 000 <span>/ проект</span></div>
+          <ul>
+            <li>Архитектурная концепция</li>
+            <li>Топографическая съёмка</li>
+            <li>Визуализация 3D</li>
+            <li>Базовый пакет чертежей</li>
+          </ul>
+          <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:32px;">ОБСУДИТЬ →</a>
+        </div>
+
+        <!-- ПАКЕТ 2: ПОПУЛЯРНЫЙ (выделен) -->
+        <div class="pricing-card featured">
+          <div class="pkg-badge">ПОПУЛЯРНЫЙ</div>
+          <h3>Полный цикл</h3>
+          <div class="price">от $25 000 <span>/ проект</span></div>
+          <ul>
+            <li>Архитектура + Геодезия</li>
+            <li>Дизайн интерьера</li>
+            <li>Авторский надзор</li>
+            <li>3D визуализация</li>
+            <li>Смета и тендер</li>
+          </ul>
+          <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:32px;">ОБСУДИТЬ →</a>
+        </div>
+
+        <!-- ПАКЕТ 3: ПРЕМИУМ -->
+        <div class="pricing-card">
+          <div class="pkg-badge">ПРЕМИУМ</div>
+          <h3>Под ключ</h3>
+          <div class="price">от $40 000 <span>/ проект</span></div>
+          <ul>
+            <li>Полный цикл включён</li>
+            <li>Ландшафтный дизайн</li>
+            <li>Озеленение территории</li>
+            <li>Система автополива</li>
+            <li>Управление проектом</li>
+          </ul>
+          <a href="#contact" class="btn-primary" style="display:block;text-align:center;margin-top:32px;">ОБСУДИТЬ →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- /УСЛУГИ -->
+
+  <!-- ========================================================
+       ФОРМА ЗАЯВКИ И КОНТАКТЫ
+       id="contact" — якорная ссылка из навигации
+       ======================================================== -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+
+      <div class="section-header reveal">
+        <span class="sub-label">СВЯЖИТЕСЬ С НАМИ</span>
+        <h2>Готовы воплотить идею?</h2>
+        <p>Оставьте заявку — мы перезвоним в течение 24 часов</p>
+      </div>
+
+      <div class="contact-wrapper reveal">
+
+        <!-- ФОРМА ОТПРАВКИ -->
+        <!-- TODO: подключить реальную отправку через Formspree / EmailJS -->
+        <!-- onsubmit вызывает функцию submitForm() из script.js -->
+        <div class="contact-form-col">
+          <h3>Отправить заявку</h3>
+          <form id="contactForm" onsubmit="submitForm(event)" novalidate>
+            <div class="form-group">
+              <input type="text" id="cName" placeholder="Ваше имя *" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <input type="tel" id="cPhone" placeholder="Телефон (+996...) *" required autocomplete="tel">
+            </div>
+            <div class="form-group">
+              <input type="email" id="cEmail" placeholder="Email" autocomplete="email">
+            </div>
+            <div class="form-group">
+              <textarea id="cMsg" placeholder="Расскажите о вашем проекте..." rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn-submit-form">ОТПРАВИТЬ ЗАЯВКУ →</button>
+          </form>
+          <!-- Сообщение об успехе (показывается после отправки) -->
+          <div id="formSuccess" class="form-success" role="status">
+            ✓ Спасибо! Мы свяжемся с вами в течение 24 часов
+          </div>
+        </div>
+
+        <!-- КОНТАКТНАЯ ИНФОРМАЦИЯ -->
+        <!-- Меняйте адрес, телефоны, email здесь -->
+        <div class="contact-details-col">
+          <div class="contact-details">
+
+            <div class="contact-block">
+              <h4>📍 Адрес</h4>
+              <p>Кыргызстан, г. Бишкек<br>пр. Мурзакулова, 11</p>
+            </div>
+
+            <div class="contact-block">
+              <h4>📞 Телефон</h4>
+              <p>
+                <a href="tel:+996501059194">+996 (50) 105-91-94</a><br>
+                <a href="tel:+996777059194">+996 (77) 705-91-94</a>
+              </p>
+            </div>
+
+            <div class="contact-block">
+              <h4>✉️ Email</h4>
+              <p><a href="mailto:hello@arhmuras.kg">hello@arhmuras.kg</a></p>
+            </div>
+
+            <div class="contact-block">
+              <h4>🕐 Часы работы</h4>
+              <p>Пн–Пт: 09:00 – 18:00<br>Сб: 10:00 – 16:00<br>Вс: выходной</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- /КОНТАКТЫ -->
+
+  <!-- ========================================================
+       ПОДВАЛ (FOOTER)
+       ======================================================== -->
+  <footer class="main-footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-grid">
+
+          <!-- Колонка 1: Бренд -->
+          <div class="footer-brand">
+            <h3>ARH_MURAS_GROUP</h3>
+            <p>От идеи к реальности. Архитектура, которая вдохновляет.</p>
+            <div class="footer-services-tags">
+              <span>🏗️ Архитектура</span>
+              <span>🗺️ Геодезия</span>
+              <span>🎨 Дизайн</span>
+              <span>🌿 Ландшафт</span>
+            </div>
+          </div>
+
+          <!-- Колонка 2: Навигация -->
+          <div class="footer-nav-col">
+            <h4>Навигация</h4>
+            <ul>
+              <li><a href="index.html">О студии</a></li>
+              <li><a href="projects.html">Портфолио</a></li>
+              <li><a href="team.html">Команда</a></li>
+              <li><a href="#contact">Контакты</a></li>
+            </ul>
+          </div>
+
+          <!-- Колонка 3: Контакты -->
+          <div class="footer-contact-col">
+            <h4>Контакты</h4>
+            <!-- Меняйте контактную информацию здесь -->
+            <p>📍 г. Бишкек, пр. Мурзакулова, 11</p>
+            <p>📞 +996 (50) 105-91-94</p>
+            <p>✉️ hello@arhmuras.kg</p>
+          </div>
+
+          <!-- Колонка 4: Соцсети -->
+          <div class="footer-social-col">
+            <h4>Соц. сети</h4>
+            <!-- Замените ссылки на ваши реальные аккаунты -->
+            <div class="socials">
+              <a href="https://instagram.com/arhmuras" target="_blank" rel="noopener">INSTAGRAM</a>
+              <a href="https://wa.me/996501059194" target="_blank" rel="noopener">WHATSAPP</a>
+              <a href="https://t.me/arhmuras" target="_blank" rel="noopener">TELEGRAM</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Нижняя строка копирайта -->
+    <div class="footer-bottom">
+      <div class="container">
+        <!-- Год: обновите при необходимости -->
+        <p>© 2026 ARH_MURAS_GROUP. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+  <!-- /FOOTER -->
+
+  <!-- ========================================================
+       СКРИПТЫ
+       Порядок важен! config.js → Supabase SDK → script.js → animations.js
+       ======================================================== -->
+
+  <!-- 1. Настройки (URL, ключи Supabase, пароли) -->
+  <script src="config.js"></script>
+
+  <!-- 2. Supabase JavaScript SDK (через CDN, не нужно ничего устанавливать) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <!-- 3. Основная логика сайта -->
+  <script src="script.js"></script>
+
+  <!-- 4. Анимации, тёмная тема, burger-меню -->
+  <script src="animations.js"></script>
+
+</body>
+</html>
